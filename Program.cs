@@ -7,7 +7,7 @@ void Main()
     string file = File.ReadAllText(string.Join("\\", projectDir, "data.txt"));
     List<int> left = new List<int>();
     List<int> right = new List<int>();
-    List<int> diffs = new List<int>();
+    List<int> results = new List<int>();
 
     if (file != null && !string.IsNullOrEmpty(file))
     {
@@ -28,16 +28,19 @@ void Main()
         left.Sort();
         right.Sort();
 
-        // Get the difference between each item
-        for (int i = 0; i < left.Count; i++)
+        // Use each left int as query and find it's occurences in the right list.
+        foreach (int query in left)
         {
-            int min = Math.Min(left[i], right[i]);
-            int max = Math.Max(left[i], right[i]);
-            diffs.Add(max - min);
+            int occurrences = 0;
+            foreach (int test in right)
+            {
+                if (test == query) { occurrences++; }
+            }
+            results.Add(query * occurrences);
         }
 
         // Add up the diffs
-        int sum = diffs.Sum();
+        int sum = results.Sum();
         Console.WriteLine(string.Format("Final number: {0}", sum));
     }
     else
